@@ -192,7 +192,7 @@ TRACE_EVENT(sched_util_est_se,
 		strscpy(__entry->path, path, PATH_SIZE);
 		strscpy(__entry->comm, comm, TASK_COMM_LEN);
 		__entry->pid		= pid;
-#if LINUX_VERSION_CODE < KERNEL_VERSION(6,8,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6,8,0) && !defined(CONFIG_RHEL_DIFFERENCES)
 		__entry->enqueued	= avg->util_est.enqueued;
 		__entry->ewma		= avg->util_est.ewma;
 #else
@@ -224,7 +224,7 @@ TRACE_EVENT(sched_util_est_cfs,
 	TP_fast_assign(
 		__entry->cpu		= cpu;
 		strscpy(__entry->path, path, PATH_SIZE);
-#if LINUX_VERSION_CODE < KERNEL_VERSION(6,8,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6,8,0) && !defined(CONFIG_RHEL_DIFFERENCES)
 		__entry->enqueued	= avg->util_est.enqueued;
 		__entry->ewma		= avg->util_est.ewma;
 #else
@@ -327,7 +327,7 @@ TRACE_EVENT(sched_cpu_capacity,
 		__field(	unsigned long,	capacity_curr	)
 	),
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(6,7,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6,7,0) && !defined(CONFIG_RHEL_DIFFERENCES)
 	unsigned long scale_cpu = rq->cpu_capacity_orig;
  #ifdef CONFIG_ARM64
 	unsigned long scale_freq = arch_scale_freq_capacity(rq->cpu);
@@ -335,7 +335,7 @@ TRACE_EVENT(sched_cpu_capacity,
 	unsigned long scale_freq = SCHED_CAPACITY_SCALE;
  #endif
 #else
- #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,10,0) && defined(CONFIG_X86)) || defined(CONFIG_ARM64)
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,10,0) && defined(CONFIG_X86)) || defined(CONFIG_ARM64) || defined(CONFIG_RHEL_DIFFERENCES)
 	unsigned long scale_cpu = arch_scale_freq_capacity(rq->cpu);
 	unsigned long scale_freq = arch_scale_freq_capacity(rq->cpu);
  #else
