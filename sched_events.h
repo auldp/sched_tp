@@ -335,7 +335,7 @@ TRACE_EVENT(sched_cpu_capacity,
 	unsigned long scale_freq = SCHED_CAPACITY_SCALE;
  #endif
 #else
- #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,10,0) && defined(CONFIG_X86)) || defined(CONFIG_ARM64) || defined(CONFIG_RHEL_DIFFERENCES)
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,10,0) && defined(CONFIG_X86)) || defined(CONFIG_ARM64)
 	unsigned long scale_cpu = arch_scale_freq_capacity(rq->cpu);
 	unsigned long scale_freq = arch_scale_freq_capacity(rq->cpu);
  #else
