@@ -10,3 +10,4 @@ modules.order
 .*.mod.cmd
 vmlinux_deps*.h
 vmlinux.h
+trace_config.h

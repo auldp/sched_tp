@@ -2,6 +2,7 @@ obj-m += sched_tp.o
 
 EXTRA_CFLAGS = -I$(src)
 
+TRACE_CONFIG_H = trace_config.h
 VMLINUX_DEPS_UCLAMP_H = vmlinux_deps_uclamp.h
 VMLINUX_DEPS_H = vmlinux_deps.h
 VMLINUX_H = vmlinux.h
@@ -18,12 +19,16 @@ else
 	VMLINUX ?= $(KERNEL_SRC)/vmlinux
 endif
 
-all: $(VMLINUX_H)
+all: $(VMLINUX_H) $(TRACE_CONFIG_H)
 	make -C $(KERNEL_SRC) M=$(PWD) modules
 
 clean:
 	make -C $(KERNEL_SRC) M=$(PWD) clean
-	rm -f $(VMLINUX_H) $(VMLINUX_DEPS_H) $(VMLINUX_DEPS_UCLAMP_H)
+	rm -f $(VMLINUX_H) $(VMLINUX_DEPS_H) $(VMLINUX_DEPS_UCLAMP_H) $(TRACE_CONFIG_H)
+
+$(TRACE_CONFIG_H):
+	@rm -f $@ 
+	echo "#define TRACE_INCLUDE_PATH `pwd`" > $(TRACE_CONFIG_H)
 
 $(VMLINUX_DEPS_UCLAMP_H): $(VMLINUX_DEPS_UCLAMP_TXT) $(VMLINUX)
 	@rm -f $@
